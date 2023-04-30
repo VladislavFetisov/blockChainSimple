@@ -1,0 +1,28 @@
+version: "3"
+
+services:
+  node1:
+    container_name: node1
+    image: fetisov_block_chain:latest
+    ports:
+      - "9001:9001"
+    entrypoint: java -jar ./app/blockСhain.jar
+    command: -port 9001 -otherNodes "node2:9002 node3:9003" -currentNode "node1:9001" -isGenesis true
+    depends_on:
+      - node2
+      - node3
+  node2:
+    container_name: node2
+    image: fetisov_block_chain:latest
+    ports:
+      - "9002:9002"
+    entrypoint: java -jar ./app/blockСhain.jar
+    command: -port 9002 -otherNodes "node1:9001 node3:9003" -currentNode "node2:9002"
+
+  node3:
+    container_name: node3
+    image: fetisov_block_chain:latest
+    ports:
+      - "9003:9003"
+    entrypoint: java -jar ./app/blockСhain.jar
+    command: -port 9003 -otherNodes "node1:9001 node2:9002" -currentNode "node3:9003"
